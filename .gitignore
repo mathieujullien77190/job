@@ -26,3 +26,4 @@ CV_Mathieu_JULLIEN.pdf
 # PDF à envoyer (CV + lettre par entreprise) et CV de base : fichiers locaux uniquement
 envoi/
 cv_base/
+.claude/scheduled_tasks.lock

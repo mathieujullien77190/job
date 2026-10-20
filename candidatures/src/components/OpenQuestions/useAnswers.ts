@@ -12,7 +12,7 @@ export const useAnswers = () => {
   const [answers, setAnswers] = useState<AnswersByFiche>({})
   const [load, setLoad] = useState<Load>('loading')
   const [states, setStates] = useState<Record<string, SaveState>>({})
-  const [drafts, setDrafts] = useState<Record<string, string>>({}) // texte en cours de frappe, pas encore relu depuis le fichier
+  const [drafts, setDrafts] = useState<Record<string, string>>({}) // texte en cours de frappe, pas encore relu depuis Firestore
   const timers = useRef(new Map<string, number>())
 
   useEffect(

@@ -90,7 +90,7 @@ export const ChoicesLabel = styled.span`
   color: var(--muted);
 `
 
-// Proposition de lettre : un clic la copie dans la lettre (et dans le fichier).
+// Proposition de lettre : un clic la copie dans la lettre (et dans Firestore).
 export const Choice = styled.button<{ $active: boolean }>`
   background: ${({ $active }) => ($active ? 'var(--accent)' : '#fff')};
   color: ${({ $active }) => ($active ? '#fff' : 'var(--fg)')};

@@ -12,7 +12,7 @@ export type Keyword = {
   pdfUrl: string
 }
 
-// Fiche de la base de connaissance (base/connaissances/index.json) : un mot-clé + le texte brut pour la recherche.
+// Fiche de la base de connaissance (Firestore kb/<id>) : un mot-clé + le texte brut pour la recherche.
 export type KnowledgeEntry = Keyword & { text: string; speech?: string } // speech : texte à lire à voix haute (titres et paragraphes, sans tableaux ni code)
 
 // Vue affichée par le menu du haut.
@@ -23,12 +23,12 @@ export type Detail = { label: string; value: string }
 // « CV vérifié » et « Lettre de motivation vérifiée »
 export type Checks = { cv: boolean; letter: boolean }
 
-// Proposition de lettre : un fichier de envois/<id>/propositions_lettre/, choisie dans l'onglet Lettre (statut étude).
+// Proposition de lettre (applications/<id>.proposals), choisie dans l'onglet Lettre (statut étude).
 export type LetterProposal = { id: string; label: string; text: string }
 
-// Ce que le serveur de dev lit dans envois/<id>/ (candidature.json, lettre, modifs du CV, offre, propositions).
+// Une candidature telle qu'elle est stockée dans Firestore (applications/<id>).
 export type ServerApplication = {
-  id: string // nom du dossier dans envois/
+  id: string // identifiant du document (slug : nom d'entreprise en minuscules)
   company: string
   title: string
   location?: string
@@ -58,7 +58,7 @@ export type Application = Omit<ServerApplication, 'keywords'> & {
   keywords: Keyword[]
 }
 
-// Ce qui est modifiable dans la page : écrit dans les fichiers de envois/ par le serveur de dev.
+// Ce qui est modifiable dans la page : écrit dans Firestore (applications/<id>).
 export type Editable = Pick<Application, 'status' | 'message' | 'cvChanges' | 'checks'>
 
 export type SortOrder = 'desc' | 'asc'
@@ -70,21 +70,21 @@ export type PdfSelection = { heading: string; docs: PdfDocument[]; active: numbe
 
 export type TextSegment = { text: string; hit: boolean }
 
-// Post-it de la liste de choses à faire du tableau de bord (base/todo.json).
+// Post-it de la liste de choses à faire du tableau de bord (Firestore, meta/todos).
 export type Todo = { id: string; text: string; done: boolean; color: number }
 
-// Site de recherche d'emploi (base/sites_recherche.json), affiché dans le tableau de bord.
+// Site de recherche d'emploi (Firestore, meta/sites), affiché dans le tableau de bord.
 export type SearchSite = { label: string; url: string }
 
-// QCM d'une fiche de la base de connaissance (base/qcm/<id>.json) : une seule bonne réponse, answer = index dans choices.
+// QCM d'une fiche de la base de connaissance (Firestore qcm/<id>) : une seule bonne réponse, answer = index dans choices.
 export type QcmQuestion = { q: string; choices: string[]; answer: number; explain: string }
 export type QcmFile = { id: string; questions: QcmQuestion[] }
 
-// Question à réponse longue d'une fiche (base/questions_ouvertes/<id>.json) ; keyPoints = grille de correction, jamais affichée avant la correction.
+// Question à réponse longue d'une fiche (Firestore openQuestions/<id>) ; keyPoints = grille de correction, jamais affichée avant la correction.
 export type OpenQuestion = { id: string; q: string; keyPoints: string[] }
 export type OpenQuestionFile = { id: string; questions: OpenQuestion[] }
 
-// Correction écrite par Claude Code (skill valider-reponses) dans base/reponses/<fiche>.json.
+// Correction écrite par Claude Code (skill valider-reponses) dans Firestore (answers/<fiche>).
 export type AnswerReview = { status: 'correct' | 'partiel' | 'incorrect'; feedback: string; improved?: string; reviewedAt: string }
 // Réponse longue de l'utilisateur : texte écrit dans la page, correction ajoutée ensuite par Claude.
 export type Answer = { text: string; savedAt: string; review?: AnswerReview }

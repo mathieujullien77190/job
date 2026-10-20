@@ -51,7 +51,7 @@ import {
 import type { DashboardProps } from './types'
 import { useTodos } from './useTodos'
 
-// Tableau de bord : chiffres clés, post-its à faire (base/todo.json), rappels déduits des candidatures, répartition par statut.
+// Tableau de bord : chiffres clés, post-its à faire (Firestore, meta/todos), rappels déduits des candidatures, répartition par statut.
 export const Dashboard = ({ items }: DashboardProps) => {
   const { sites: SEARCH_SITES } = useKnowledge()
   const { todos, load, saveError, add, patch, remove } = useTodos()
@@ -104,7 +104,7 @@ export const Dashboard = ({ items }: DashboardProps) => {
         </AddForm>
         {load === 'ready' && notes.length === 0 && <Hint>{TODO_EMPTY_LABEL}</Hint>}
         <Stack>
-          {notes.map((t, i) => (
+          {notes.map((t) => (
             <Note
               key={t.id}
               $color={NOTE_COLORS[t.color % NOTE_COLORS.length]}

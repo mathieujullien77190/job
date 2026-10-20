@@ -20,6 +20,8 @@ export const vaultDoc = (name: string, id: string) => doc(db, 'vault', secret, n
 
 // Vrai si le secret est accepté par les règles (lecture autorisée), faux s'il est refusé.
 export const checkSecret = async (value: string): Promise<boolean> => {
+  // un secret avec « / » ou d'autres caractères casserait le chemin Firestore : refusé sans appel réseau
+  if (!/^[A-Za-z0-9_-]{16,}$/.test(value)) return false
   try {
     await getDocs(query(collection(db, 'vault', value, 'applications'), limit(1)))
     return true

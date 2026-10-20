@@ -8,9 +8,9 @@ export const MENU_ITEMS: MenuItem[] = [
 ]
 export const LOADING_LABEL = 'Chargement des candidatures…'
 export const API_ERROR_LABEL =
-  'Impossible de lire les fichiers de envois/. Lance le site avec « pnpm run dev » : le serveur de dev lit et écrit les fichiers.'
+  'Impossible de lire les candidatures dans Firestore. Vérifie la connexion puis recharge la page.'
 export const SAVE_ERROR_LABEL = 'Modification non enregistrée'
-// Pause après la dernière frappe avant d'écrire le texte dans le fichier
+// Pause après la dernière frappe avant d'enregistrer le texte dans Firestore
 export const SAVE_DELAY_MS = 600
 export const SORT_DESC_LABEL = 'Date : récentes d’abord ↓'
 export const SORT_ASC_LABEL = 'Date : anciennes d’abord ↑'

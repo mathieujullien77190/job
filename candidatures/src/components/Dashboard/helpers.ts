@@ -8,7 +8,7 @@ const WAITING: Status[] = ['envoyée', 'reçue']
 
 export const countWaiting = (items: Application[]): number => items.filter((a) => WAITING.includes(a.status)).length
 
-// Rappels déduits des fichiers : CV / lettre pas vérifiés (statut étude), candidature sans nouvelle depuis une semaine.
+// Rappels déduits des candidatures : CV / lettre pas vérifiés (statut étude), candidature sans nouvelle depuis une semaine.
 export const buildReminders = (items: Application[], now: number): Reminder[] =>
   items.flatMap((a): Reminder[] => {
     if (a.status === 'étude') {

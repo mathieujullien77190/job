@@ -2,5 +2,5 @@ export type InterviewPrepProps = {
   onBack: () => void
 }
 
-// Une section du fichier base/entretien.md : un titre « ## » et son contenu Markdown.
+// Une section des notes d'entretien (Firestore, meta/interview) : un titre « ## » et son contenu Markdown.
 export type PrepSection = { id: string; title: string; body: string }

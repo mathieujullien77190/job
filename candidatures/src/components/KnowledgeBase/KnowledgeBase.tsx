@@ -46,7 +46,7 @@ import {
 } from './styles'
 import type { KnowledgeBaseProps, QuizRun } from './types'
 
-// Base de connaissance : toutes les fiches techniques (une par PDF), avec recherche plein texte, groupées par catégorie.
+// Base de connaissance : toutes les fiches techniques (Firestore, kb/<id>), avec recherche plein texte, groupées par catégorie.
 // Sous chaque fiche : son QCM et ses questions ouvertes ; en haut : un QCM général tiré au hasard dans toute la base.
 export const KnowledgeBase = ({ onOpenPdf, target, onTargetUsed }: KnowledgeBaseProps) => {
   const { kb: KNOWLEDGE_BASE, qcm: QCM, openQuestions: OPEN_QUESTIONS } = useKnowledge()

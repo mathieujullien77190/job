@@ -25,7 +25,7 @@ export const KeywordList = ({ keywords, offer, onOpenPdf, onQcm }: KeywordListPr
             </Line>
           ))}
           <Summary>{k.summary}</Summary>
-          <OpenLabel>Ouvrir la fiche PDF ↗</OpenLabel>
+          <OpenLabel>Ouvrir la fiche ↗</OpenLabel>
         </Item>
         <Buttons>
           {(QCM[k.id]?.length ?? 0) > 0 && <QcmButton count={QCM[k.id].length} onClick={() => onQcm(k.id)} />}

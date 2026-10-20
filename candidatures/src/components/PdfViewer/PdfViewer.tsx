@@ -22,7 +22,7 @@ export const PdfViewer = ({ selection, onSelectTab, onClose }: PdfViewerProps) =
               onSelect={(id) => onSelectTab(Number(id))}
             />
           )}
-          <Frame key={doc.url} src={doc.url} title={doc.title} />
+          <Frame key={doc.url} src={doc.url} title={doc.title} sandbox="" />
         </>
       ) : (
         <Empty>{EMPTY_LABEL}</Empty>
