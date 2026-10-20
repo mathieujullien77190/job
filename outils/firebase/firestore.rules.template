@@ -1,0 +1,14 @@
+rules_version = '2';
+
+// Modèle des règles : le secret n'est jamais dans git.
+// `node outils/firebase/build-rules.mjs` remplace __VAULT_SECRET__ par le contenu de
+// outils/.secrets/vault.txt et écrit outils/firebase/.generated/firestore.rules (ignoré par git).
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Toutes les données sont sous vault/<secret>/... ; le secret est dans le chemin.
+    // Aucune règle ne permet de lister `vault` lui-même : sans le secret, rien n'est lisible.
+    match /vault/{secret}/{document=**} {
+      allow read, write: if secret == '__VAULT_SECRET__';
+    }
+  }
+}

@@ -1,0 +1,28 @@
+node_modules/
+dist/
+*.log
+.env
+.env.*
+
+# fichiers personnels hors projet (all.txt contient des clés)
+all.txt
+Sans titre.jpg
+
+# réglages locaux de Claude Code
+.claude/settings.local.json
+
+# secret Firestore et règles générées (contiennent le secret)
+outils/.secrets/
+outils/firebase/.generated/
+outils/fiches/.generated/
+
+# données personnelles : elles sont dans Firestore, ces dossiers ne sont que l'espace de travail local
+envois/
+base/
+apercus_cv/
+outils/cv/*.html
+CV_Mathieu_JULLIEN.pdf
+
+# PDF à envoyer (CV + lettre par entreprise) et CV de base : fichiers locaux uniquement
+envoi/
+cv_base/

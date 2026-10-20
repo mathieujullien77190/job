@@ -1,0 +1,36 @@
+export const CV_CHANGES_TITLE = 'Modifications à apporter au CV'
+export const LETTER_TITLE = 'Lettre de motivation'
+export const CV_SEND_TAB = 'CV à envoyer'
+export const CV_BASE_TAB = 'CV de base'
+export const CV_BASE_SEND_TAB = 'CV de base (à envoyer)'
+export const CV_BASE_LABEL = 'CV de base, non modifié'
+export const CV_MODIFIED_LABEL = 'CV modifié'
+export const COLLAPSE_LABEL = "Réduire l'offre"
+export const EXPAND_LABEL = "Déplier l'offre"
+export const CV_PREVIEW_TAB = 'Aperçu modifié (couleurs)'
+
+// Onglets de la carte (ids) et libellés
+export const TAB_DETAILS = 'details'
+export const TAB_CV = 'cv'
+export const TAB_LETTER = 'letter'
+export const PROPOSALS_LABEL = 'Propositions de lettre :'
+export const CV_EDIT_LABEL = 'Modifier le texte (Markdown)'
+export const CV_VIEW_LABEL = 'Voir la mise en forme'
+export const CV_CHECK_LABEL = 'CV vérifié'
+export const LETTER_CHECK_LABEL = 'Lettre de motivation vérifiée'
+export const SAVE_MIXTE_LABEL = 'Enregistrer dans « 0. Mixte » (Ctrl+S)'
+export const SAVED_LABEL = 'Enregistré ✓'
+export const SAVE_FAILED_LABEL = 'Échec de l’enregistrement'
+export const FEEDBACK_MS = 2500
+export const EMPTY_PROPOSAL_HINT = 'Proposition vide : vide la lettre pour écrire la tienne'
+export const TAB_KEYWORDS = 'keywords'
+export const TAB_OFFER = 'offer'
+export const TAB_SUMMARY = 'summary'
+export const TAB_QUESTIONS = 'questions'
+export const SUMMARY_LABEL = "Résumé de l'offre"
+export const QUESTIONS_LABEL = 'Questions / réponses'
+export const OFFER_LABEL = "Texte de l'offre"
+export const KEYWORDS_LABEL = "Mots-clés de l'offre"
+export const DETAILS_LABEL = 'Détails du poste'
+export const CV_LABEL = 'Modifications du CV'
+export const LETTER_LABEL = 'Lettre de motivation'

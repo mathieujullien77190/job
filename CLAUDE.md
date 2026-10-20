@@ -1,0 +1,34 @@
+# Suivi de candidatures (Mathieu Jullien)
+
+## Règles
+
+- **Ne pas consulter les sites des annonces.** Ne jamais ouvrir, télécharger ni analyser le lien d'une offre d'emploi (WebFetch, WebSearch sur l'annonce, navigateur Chrome, curl, etc.), même si l'URL est fournie. Travailler uniquement avec le texte que l'utilisateur colle. Une exception seulement : l'utilisateur le demande explicitement dans son message. Si une information manque, la demander ou écrire « Non indiqué », ne pas aller la chercher sur le site.
+- **Vérifier que la doc n'existe pas déjà** avant d'en créer une (fiches, lettres, aperçus, README) : la réutiliser ou la mettre à jour.
+- **Ne rien inventer dans le CV ni dans les lettres** : seulement des faits présents dans `cv_base/CV_base.pdf` (HTML : Firestore `cv/base`).
+- Les aperçus de CV colorés vont dans `apercus_cv/`, jamais dans `envoi/` (ce qui part chez le recruteur).
+- Git : commits et pushs signés uniquement par l'utilisateur, en anglais (Conventional Commits), sans mention d'assistant.
+
+- **0-Mixte toujours présent :** chaque candidature a une proposition `0-Mixte` dans `applications/<slug>.proposals`, vide à la création (la lettre « mixte » de l'utilisateur y est enregistrée depuis la page).
+- **Fiche modifiée = questions mises à jour :** à chaque création ou modification d'une fiche (`outils/fiches/docs-*.mjs`), revoir aussi Firestore `qcm/<id>` et `openQuestions/<id>` (skill `maintenir-base-connaissance`). Une fiche vise 2 pages de contenu (3 au plus), sauf s'il n'y a vraiment rien à dire.
+- **CV adapté à chaque candidature :** à chaque ajout d'une candidature, produire aussi le CV modifié (skill `modifier-cv`) : copie de travail `outils/cv/<slug>.html` avec les modifs en jaune (nouveau) et rouge barré (ancien), aperçu `apercus_cv/<slug>.pdf` et CV propre `envoi/<Entreprise>/CV_*.pdf` via `node outils/cv/build.mjs <slug>` (qui met aussi `cv/<slug>` à jour dans Firestore). Ne pas se contenter de copier `cv_base/CV_base.pdf`. Appliquer seulement des faits du CV de base ; ce qui est « à combler » reste dans `modifs_cv.md`.
+
+- **Historique des questions :** quand l'utilisateur pose une question sur une offre ou son entreprise (sens d'un sigle, ESN ou éditeur, pays du groupe, technologie citée, où placer un élément dans le CV…), ajouter la question et la réponse à `applications/<slug>.questions` dans Firestore (Markdown : `## n. Question`, puis la réponse ; ordre chronologique ; le créer avec un titre `# Questions sur l'offre <Entreprise>` s'il n'existe pas). Y compris les questions générales posées dans le contexte de l'offre. Vérifier d'abord que la question n'y est pas déjà. L'onglet « Questions / réponses » de la carte l'affiche. Un résumé court de l'offre est dans `applications/<slug>.summary` (onglet « Résumé de l'offre »).
+- **Données dans Firestore, pas dans git** : candidatures, lettres, CV (HTML en texte), fiches (HTML), QCM, questions ouvertes, notes d'entretien, post-its et réponses sont dans Firestore (projet `jobs-930d3`, sous `vault/<secret>/…`). Le site (`pnpm run dev`, ou la page déployée) les lit en direct, sans localStorage. Le secret est dans `outils/.secrets/vault.txt` (jamais dans git, ne jamais l'afficher ni le committer) ; la page s'ouvre avec `?key=<secret>` dans l'adresse, sinon elle affiche une erreur. Les règles Firestore sont générées par `node outils/firebase/build-rules.mjs [--deploy]` à partir de `outils/firebase/firestore.rules.template`.
+- **Déployé = Firestore seulement ; en local = Firestore + PDF** : la page déployée (GitHub Pages) ne fait que lire et écrire Firestore. En local, Claude Code lit et écrit Firestore avec `node outils/firebase/db.mjs` (`list`, `get`, `set`, `merge`, `put`, `delete`) et génère en plus les PDF du CV (`outils/cv/build.mjs <slug>`, `build-base.mjs`) et de la lettre (`outils/cv/send.mjs <slug>`), rangés dans `envoi/<Entreprise>/` et `cv_base/`. Ces dossiers, `apercus_cv/` et `outils/cv/<slug>.html` (copies de travail) sont locaux et hors git. Avant d'écrire un champ que la page modifie aussi (statut, `checks`, `message`, `cvChanges`, réponses), le relire dans Firestore.
+- **Téléphone / déploiement** : la page lit Firestore directement, elle marche donc sans le PC une fois déployée (GitHub Pages) ; `pnpm run dev:phone` sert encore à l'ouvrir sur le Wi-Fi en développement.
+- **Ne jamais committer `all.txt`** (contient des clés) ni de secrets ; il est dans `.gitignore`.
+
+## Organisation
+
+- `candidatures/` : site Vite + React + TypeScript + styled-components (`pnpm run dev`). Il lit Firestore (`src/helpers/api.ts`, `KnowledgeProvider`) et ne contient aucune donnée en dur. Déployé sur GitHub Pages par `.github/workflows/deploy.yml`.
+- Firestore (`vault/<secret>/…`) : `applications/<slug>` (candidature, lettre, modifs du CV, offre, résumé, questions, propositions, mots-clés), `cv/base` et `cv/<slug>` (HTML annoté et propre), `kb/<id>` (fiches en HTML), `qcm/`, `openQuestions/`, `answers/`, `meta/` (`interview`, `sites`, `todos`, `techs`).
+- `envoi/<Entreprise>/` : `CV_*.pdf` et `Lettre_motivation_*.pdf` à envoyer au recruteur (local, hors git).
+- `cv_base/` : `CV_base.pdf` (CV de référence) et `CV_base_original.pdf` (PDF d'origine, sauvegarde).
+- `outils/fiches/` : contenu des fiches (`docs-*.mjs`, `library.mjs`) ; `node outils/fiches/build.mjs --export` produit les fiches en HTML pour Firestore. `outils/cv/` : scripts de génération du CV et de la lettre en PDF. `outils/firebase/` : règles Firestore (modèle + génération avec le secret). `outils/.secrets/` : `vault.txt` et `sender.json` (hors git).
+
+## Skills (à lancer depuis ce dossier)
+
+- `ajouter-candidature` : ajouter une offre (dossier, détails, lettre, modifs du CV, fiches).
+- `maintenir-base-connaissance` : créer ou modifier une fiche (viser 2 pages, 3 au plus) et mettre à jour dans la foulée son QCM et ses questions ouvertes.
+- `valider-reponses` : corriger les réponses longues du QCM (Firestore `answers/`) quand l'utilisateur le demande, ou ajouter des questions ouvertes (`base/questions_ouvertes/`).
+- `modifier-cv` : produire le CV adapté, le relire, mettre à jour le statut.
